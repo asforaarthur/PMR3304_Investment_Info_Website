@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Inserir Novo Artigo</h2>
+<form method="POST" action="{% url 'investments:create' %}">
+    {% csrf_token %}
+    <p>
+        <label for="id_name">Título:</label>
+        <input type="text" name="name" id="id_name" />
+    </p>
+    <p>
+        <label for="id_categoria">Categoria de investimento:</label>
+        <input type="text" name="categoria" id="id_categoria" />
+    </p>
+    <p>
+        <label for="id_image_url">URL da Imagem:</label>
+        <input type="url" name="image_url" id="id_image_url" />
+    </p>
+    <button type="submit">Criar</button>
+</form>
+
+{% endblock content %}

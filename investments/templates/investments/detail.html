@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ investment.name }} ({{ investment.categoria }}
+{% endblock title %}
+
+{% block content %}
+<h2> {{ investment.name }}</h2>
+
+<section class="dados-de-investment">
+    <img src="{{ investment.image_url }}" alt="Foto do artigo {{ investment.name}}">
+    <ul>
+        <li>Categoria: {{ investment.categoria }} </li>
+    </ul>
+</section>
+
+{% endblock content %}

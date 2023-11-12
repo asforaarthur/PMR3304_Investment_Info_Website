@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Todos os Artigos</h2>
+<section>
+    <p>Muitos resultados? <a href="{% url 'investments:search' %}">Buscar Artigos</a></p>
+    <p>Não encontrou o artigo? <a href="{% url 'investments:create' %}">Adicionar Novo Artigo</a></p>
+</section>
+{% if investment_list %}
+<section class="lista-de-cards">
+    {% for investment in investment_list %}
+    <article class="card">
+        <a href="{% url 'investments:detail' forloop.counter %}"><img src="{{ investment.image_url }}"
+                alt="Foto do artigo {{ investment.name}}"></a>
+        <p>{{ investment.name }}</p>
+    </article>
+    {% endfor %}
+</section>
+{% else %}
+<p>Não foi encontrado nenhum artigo.</p>
+{% endif %}
+
+{% endblock content %}

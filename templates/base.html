@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {% block title %}{% endblock %} | Portal sobre educação financeira!
+        {% block title %}{% endblock %} InvesteProspera - Educação Financeira
     </title>
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
@@ -21,6 +21,7 @@
             <ul>
                 <li><a href="{% url 'investments:index' %}">Artigos de Investimento</a></li>
                 <li><a href="{% url 'about' %}">Sobre</a></li>
+                <li><a href="{% url 'investments:lists' %}">Artigos favoritos</a></li>
             </ul>
         </nav>
 

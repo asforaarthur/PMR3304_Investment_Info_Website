@@ -1,17 +1,46 @@
 {% extends 'base.html' %}
-
 {% block title %}
-{{ investment.name }} ({{ investment.categoria }}
+    <strong>{{ investment.name }}</strong> (<strong>{{ investment.categoria }}</strong>)
 {% endblock title %}
-
 {% block content %}
-<h2> {{ investment.name }}</h2>
-
-<section class="dados-de-investment">
-    <img src="{{ investment.image_url }}" alt="Foto do artigo {{ investment.name}}">
-    <ul>
-        <li>Categoria: {{ investment.categoria }} </li>
-    </ul>
-</section>
-
+    <h2>{{ investment.name }}</h2>
+    <section class="dados-de-investment">
+        <img src="{{ investment.image_url }}" alt="Foto do artigo {{ investment.name }}">
+        <ul>
+            <li>Nome: <strong>{{ investment.name }}</strong></li>
+            <li>Categoria: <strong>{{ investment.categoria }}</strong></li>
+            <li>Texto: {{ investment.texto }}</li>
+            {% if investment.list_set.all %}<li>Incluso nas listas: {{ investment.list_set.all|join:", " }}</li>{% endif %}
+            <li>
+                <a href="{% url 'investments:update' investment.id %}">Editar</a>
+            </li>
+            <li>
+                <a href="{% url 'investments:delete' investment.id %}">Apagar</a>
+            </li>
+        </ul>
+    </section>
+    <hr>
+    <section>
+        <header>
+            <h3>Comentários</h3>
+        </header>
+        <ul>
+            {% if investment.review_set.all %}
+                {% for review in investment.review_set.all %}
+                    <figure>
+                        <blockquote>
+                            "{{ review.text }}"
+                        </blockquote>
+                        <figcaption>—{{ review.author }}</figcaption>
+                    </figure>
+                {% endfor %}
+            {% else %}
+                <p>Ainda não existe nenhum comentário para este artigo.</p>
+            {% endif %}
+        </ul>
+        <hr>
+        <a href="{% url 'investments:comentario' investment.pk %}">
+            <button>Crie seu Comentário</button>
+        </a>
+    </section>
 {% endblock content %}

@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}
-    Criar Artigo
+    Criar Artigo de Investimento
 {% endblock title %}
 {% block content %}
-    <h2>Adicionar Artigo de Investimento</h2>
-    <form action="{% url 'investments:create' %}" method="post">
+    <h2>Criar Lista de Artigos Favoritos</h2>
+    <form action="{% url 'investments:create-list' %}" method="post">
         {% csrf_token %}
-        {{ investment_form.as_p }}
+        {{ form.as_p }}
         <button type="submit">Criar</button>
     </form>
 {% endblock content %}
-
-

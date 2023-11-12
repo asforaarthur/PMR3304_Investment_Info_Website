@@ -1,3 +1,5 @@
+import requests
+
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, get_object_or_404
@@ -45,7 +47,6 @@ def search_investments(request):
 @login_required
 @permission_required('investments.add_investment')
 def create_investment(request):
-    investment = get_object_or_404(Investment, pk=investment_id)
     if request.method == 'POST':
         investment_form = InvestmentForm(request.POST)
         if investment_form.is_valid():
@@ -59,6 +60,8 @@ def create_investment(request):
     context = {"investment_form": investment_form}
     return render(request, "investments/create.html", context)
 
+@login_required
+@permission_required('investments.update_investment')
 def update_investment(request, investment_id):
     investment = get_object_or_404(Investment, pk=investment_id)
     if request.method == "POST":
@@ -82,7 +85,8 @@ def update_investment(request, investment_id):
     context = {"investment": investment, "form": form}
     return render(request, "investments/update.html", context)
 
-
+@login_required
+@permission_required('investments.delete_investment')
 def delete_investment(request, investment_id):
     investment = get_object_or_404(Investment, pk=investment_id)
 

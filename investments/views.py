@@ -4,16 +4,33 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from .models import Investment, Comentario, List
 from .forms import InvestmentForm, ComentarioForm
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-
-class InvestmentListView(generic.ListView):
-    model = Investment
-    template_name = "investments/index.html"
 
 def detail_investment(request, investment_id):
     investment = get_object_or_404(Investment, pk=investment_id)
-    context = {"investment": investment}
+    if 'last_viewed' not in request.session:
+        request.session['last_viewed'] = []
+    request.session['last_viewed'] = [investment_id
+                                      ] + request.session['last_viewed']
+    if len(request.session['last_viewed']) > 5:
+        request.session['last_viewed'] = request.session['last_viewed'][:-1]
+    context = {'investment': investment}
     return render(request, 'investments/detail.html', context)
+
+class InvestmentListView(generic.ListView):
+    model = Investment
+    template_name = 'investments/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if 'last_viewed' in self.request.session:
+            context['last_investments'] = []
+            for investment_id in self.request.session['last_viewed']:
+                context['last_investments'].append(
+                    get_object_or_404(Investment, pk=investment_id))
+        return context
 
 
 def search_investments(request):
@@ -25,14 +42,18 @@ def search_investments(request):
     return render(request, "investments/search.html", context)
 
 
-
+@login_required
+@permission_required('investments.add_investment')
 def create_investment(request):
+    investment = get_object_or_404(Investment, pk=investment_id)
     if request.method == 'POST':
         investment_form = InvestmentForm(request.POST)
         if investment_form.is_valid():
             investment = Investment(**investment_form.cleaned_data)
             investment.save()
-            return HttpResponseRedirect(reverse("investments:detail", args=(investment.pk,)))
+            return HttpResponseRedirect(
+                reverse('investments:detail', args=(investment.pk, )))
+
     else:
         investment_form = InvestmentForm()
     context = {"investment_form": investment_form}
@@ -48,13 +69,14 @@ def update_investment(request, investment_id):
             investment.image_url = form.cleaned_data["image_url"]
             investment.texto = form.cleaned_data["texto"]
             investment.save()
-            return HttpResponseRedirect(reverse("investments:detail", args=(investment_id,)))
+            return HttpResponseRedirect(reverse("investments:detail", args=(investment.id,)))
     else:
         form = InvestmentForm(
             initial={
                 "name": investment.name,
                 "categoria": investment.categoria,
                 "image_url": investment.image_url,
+                "texto": investment.texto,
             }
         )
     context = {"investment": investment, "form": form}
@@ -71,16 +93,16 @@ def delete_investment(request, investment_id):
     context = {"investment": investment}
     return render(request, "investments/delete.html", context)
 
-
+@login_required
 def create_comentario(request, investment_id):
     investment = get_object_or_404(Investment, pk=investment_id)
     if request.method == "POST":
         form = ComentarioForm(request.POST)
         if form.is_valid():
-            review_author = form.cleaned_data["author"]
-            review_text = form.cleaned_data["text"]
-            review = Comentario(author=review_author, text=review_text, investment=investment)
-            review.save()
+            comentario_author = request.user
+            comentario_text = form.cleaned_data["text"]
+            comentario = Comentario(author=comentario_author, text=comentario_text, investment=investment)
+            comentario.save()
             return HttpResponseRedirect(reverse("investments:detail", args=(investment_id,)))
     else:
         form = ComentarioForm()
@@ -93,8 +115,11 @@ class ListListView(generic.ListView):
     template_name = "investments/lists.html"
 
 
-class ListCreateView(generic.CreateView):
+class ListCreateView(LoginRequiredMixin, PermissionRequiredMixin,
+                     generic.CreateView):
     model = List
-    template_name = "investments/create_list.html"
-    fields = ["name", "author", "investments"]
-    success_url = reverse_lazy("investments:lists")
+    template_name = 'investments/create_list.html'
+    fields = ['name', 'author', 'investments']
+    success_url = reverse_lazy('investments:lists')
+    permission_required = 'investments.add_list'
+

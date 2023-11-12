@@ -25,13 +25,13 @@
             <h3>Comentários</h3>
         </header>
         <ul>
-            {% if investment.review_set.all %}
-                {% for review in investment.review_set.all %}
+            {% if investment.comentario_set.all %}
+                {% for comentario in investment.comentario_set.all %}
                     <figure>
                         <blockquote>
-                            "{{ review.text }}"
+                            "{{ comentario.text }}"
                         </blockquote>
-                        <figcaption>—{{ review.author }}</figcaption>
+                        <figcaption>—{{ comentario.author }}</figcaption>
                     </figure>
                 {% endfor %}
             {% else %}

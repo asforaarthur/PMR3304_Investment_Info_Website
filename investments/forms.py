@@ -23,10 +23,8 @@ class ComentarioForm(ModelForm):
     class Meta:
         model = Comentario
         fields = [
-            "author",
             "text",
         ]
         labels = {
-            "author": "Usuário",
             "text": "Comentário",
         }

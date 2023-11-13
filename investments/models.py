@@ -7,6 +7,7 @@ class Investment(models.Model):
     categoria = models.CharField(max_length=255)
     image_url = models.URLField(max_length=200, null=True)
     texto = models.CharField(max_length=3000, null=True)
+    data = models.DateField(auto_now_add=True)
     def __str__(self):
         return f"{self.name}"
 
@@ -15,6 +16,7 @@ class Comentario(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     likes = models.IntegerField(default=0)
+    data = models.DateField(auto_now_add=True)
     investment = models.ForeignKey(Investment, on_delete=models.CASCADE)
 
     def __str__(self):

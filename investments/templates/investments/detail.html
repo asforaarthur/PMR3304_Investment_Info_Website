@@ -27,7 +27,7 @@
         </header>
         <ul>
             {% if investment.comentario_set.all %}
-                {% for comentario in investment.comentario_set.all %}
+                {% for comentario in investment.comentario_set.all|dictsortreversed:"id" %}
                     <figure>
                         <blockquote>
                             "{{ comentario.text }}"
@@ -43,5 +43,13 @@
         <a href="{% url 'investments:comentario' investment.pk %}">
             <button>Crie seu Comentário</button>
         </a>
-    </section>
+    </section>    
 {% endblock content %}
+        
+        
+        
+        
+        
+        
+
+

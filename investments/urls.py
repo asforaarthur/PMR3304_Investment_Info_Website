@@ -14,3 +14,4 @@ urlpatterns = [
     path("lists/", views.ListListView.as_view(), name="lists"),
     path("lists/create", views.ListCreateView.as_view(), name="create-list"),
 ]
+

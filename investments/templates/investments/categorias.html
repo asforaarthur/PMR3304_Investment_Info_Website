@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Todas as Categorias</h2>
+    <ul>
+        {% for categoria, investimentos in categorias_e_investimentos.items %}
+            <li><u style="text-decoration: underline;">{{ categoria }}</u></li>
+            <ul>
+                {% for investment in investimentos %}
+                    <li>
+                        <div style="margin-bottom: 10px;">
+                            <strong>{{ investment.name }}</strong>
+                        </div>
+                        <a href="{% url 'investments:detail' investment.id %}">
+                            <img src="{{ investment.image_url }}" alt="{{ investment.name }}" style="max-width: 200px; height: auto; display: block;">
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+{% endblock %}

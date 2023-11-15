@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Comentar Artigo {{ investment.name }} ({{ investment.categoria }})</h2>
+    <form action="{% url 'investments:comentario' investment.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Postar Comentário</button>
+    </form>
+    <p>
+        <a href="{% url 'investments:detail' investment.id %}">Voltar para a página do artigo</a>
+    </p>
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}
+    <strong>{{ investment.name }}</strong> (<strong>{{ investment.categoria }}</strong>)
+{% endblock title %}
+{% block content %}
+    <h2>{{ investment.name }}</h2>
+    <section class="dados-de-investment">
+        <img src="{{ investment.image_url }}" alt="Foto do artigo {{ investment.name }}">
+        <ul>
+            <li><u>Nome</u>: <strong>{{ investment.name }}</strong></li>
+            <li><u>Categoria</u>: <strong>{{ investment.categoria }}</strong></li>
+            <li><u>Data</u>: <strong>{{investment.data}}</strong></li>
+            <li><u>Texto</u>: {{ investment.texto }}</li>
+            {% if investment.list_set.all %}<li><u>Incluso nas listas</u>: {{ investment.list_set.all|join:", " }}</li>{% endif %}
+            <li>
+                <a href="{% url 'investments:update' investment.id %}">Editar</a>
+            </li>
+            <li>
+                <a href="{% url 'investments:delete' investment.id %}">Apagar</a>
+            </li>
+        </ul>
+    </section>
+    <hr>
+    <section>
+        <header>
+            <h3>Comentários</h3>
+        </header>
+        <ul>
+            {% if investment.comentario_set.all %}
+                {% for comentario in investment.comentario_set.all|dictsortreversed:"id" %}
+                    <figure>
+                        <blockquote>
+                            "{{ comentario.text }}"
+                        </blockquote>
+                        <figcaption>—{{ comentario.author }}, {{comentario.data}}</figcaption>
+                    </figure>
+                {% endfor %}
+            {% else %}
+                <p>Ainda não existe nenhum comentário para este artigo.</p>
+            {% endif %}
+        </ul>
+        <hr>
+        <a href="{% url 'investments:comentario' investment.pk %}">
+            <button>Crie seu Comentário</button>
+        </a>
+    </section>    
+{% endblock content %}
+        
+        
+        
+        
+        
+        
+
+

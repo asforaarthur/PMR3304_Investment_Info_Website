@@ -4,7 +4,9 @@
     <h2>Todas as Categorias</h2>
     <ul>
         {% for categoria, investimentos in categorias_e_investimentos.items %}
-            <li><u style="text-decoration: underline;">{{ categoria }}</u></li>
+            <li><a href="{% url 'investments:posts_por_categoria' categoria=categoria %}">
+                <u style="text-decoration: underline;">{{ categoria }}</u>
+            </a></li>
             <ul>
                 {% for investment in investimentos %}
                     <li>

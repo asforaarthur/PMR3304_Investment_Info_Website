@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    <strong>{{ investment.name }}</strong> (<strong>{{ investment.categoria }}</strong>)
+    <strong>{{ investment.name }}</strong> (<a href="{% url 'investments:posts_por_categoria' categoria=investment.categoria %}"><strong>{{ investment.categoria }}</strong></a>)
 {% endblock title %}
 {% block content %}
     <h2>{{ investment.name }}</h2>
@@ -8,8 +8,8 @@
         <img src="{{ investment.image_url }}" alt="Foto do artigo {{ investment.name }}">
         <ul>
             <li><u>Nome</u>: <strong>{{ investment.name }}</strong></li>
-            <li><u>Categoria</u>: <strong>{{ investment.categoria }}</strong></li>
-            <li><u>Data</u>: <strong>{{investment.data}}</strong></li>
+            <li><u>Categoria</u>: <strong><a href="{% url 'investments:posts_por_categoria' categoria=investment.categoria %}">{{ investment.categoria }}</a></strong></li>
+            <li><u>Data de publicação</u>: <strong>{{investment.data}}</strong></li>
             <li><u>Texto</u>: {{ investment.texto }}</li>
             {% if investment.list_set.all %}<li><u>Incluso nas listas</u>: {{ investment.list_set.all|join:", " }}</li>{% endif %}
             <li>
@@ -43,13 +43,5 @@
         <a href="{% url 'investments:comentario' investment.pk %}">
             <button>Crie seu Comentário</button>
         </a>
-    </section>    
+    </section>
 {% endblock content %}
-        
-        
-        
-        
-        
-        
-
-

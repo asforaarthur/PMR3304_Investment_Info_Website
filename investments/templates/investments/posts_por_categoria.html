@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Artigos da Categoria: {{ categoria }}</h2>
+    <ul>
+        {% for investment in investimentos %}
+            <li>
+                <div style="margin-bottom: 20px;">
+                    <strong>{{ investment.name }}</strong>
+                </div>
+                <div>
+                    <a href="{% url 'investments:detail' investment.id %}">
+                        <img src="{{ investment.image_url }}" alt="{{ investment.name }}" style="max-width: 200px; height: auto; display: block;">
+                    </a>
+                </div>
+            </li>
+        {% empty %}
+            <p>Nenhum artigo foi encontrado para esta categoria.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -136,3 +136,7 @@ def categorias(request):
         categorias_e_investimentos[categoria] = investimentos
 
     return render(request, 'investments/categorias.html', {'categorias_e_investimentos': categorias_e_investimentos})
+
+def posts_por_categoria(request, categoria):
+    investimentos = Investment.objects.filter(categoria=categoria)
+    return render(request, 'investments/posts_por_categoria.html', {'investimentos': investimentos, 'categoria': categoria})

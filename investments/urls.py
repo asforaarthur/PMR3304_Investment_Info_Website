@@ -14,5 +14,6 @@ urlpatterns = [
     path("lists/", views.ListListView.as_view(), name="lists"),
     path("lists/create", views.ListCreateView.as_view(), name="create-list"),
     path('categorias/', views.categorias, name='categorias'),
+    path('categorias/<str:categoria>/', views.posts_por_categoria, name='posts_por_categoria')
 ]
 

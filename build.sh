@@ -11,9 +11,9 @@ python manage.py collectstatic --no-input
 python manage.py migrate
 
 # Create superuser if not existing
-DJANGO_SUPERUSER_USERNAME="your_superuser_username"
-DJANGO_SUPERUSER_EMAIL="your_superuser_email@example.com"
-DJANGO_SUPERUSER_PASSWORD="your_superuser_password"
+DJANGO_SUPERUSER_USERNAME="admin"
+DJANGO_SUPERUSER_EMAIL="asforaarthur@usp.br"
+DJANGO_SUPERUSER_PASSWORD="123456"
 
 python -c "import os; from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username=os.environ['DJANGO_SUPERUSER_USERNAME']).exists() or User.objects.create_superuser(os.environ['DJANGO_SUPERUSER_USERNAME'], os.environ['DJANGO_SUPERUSER_EMAIL'], os.environ['DJANGO_SUPERUSER_PASSWORD'])"
 

@@ -27,3 +27,4 @@ for perm in permissions_objs:
 
 basic_users_group.save()
 EOF
+

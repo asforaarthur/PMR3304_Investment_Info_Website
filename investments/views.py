@@ -118,7 +118,6 @@ class ListListView(generic.ListView):
     model = List
     template_name = "investments/lists.html"
 
-
 class ListCreateView(LoginRequiredMixin, PermissionRequiredMixin,
                      generic.CreateView):
     model = List
@@ -126,6 +125,16 @@ class ListCreateView(LoginRequiredMixin, PermissionRequiredMixin,
     fields = ['name', 'author', 'investments']
     success_url = reverse_lazy('investments:lists')
     permission_required = 'investments.add_list'
+
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        # Exclude the 'author' field from the form
+        form.fields.pop('author', None)
+        return form
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 def categorias(request):
     categorias = Investment.objects.values_list('categoria', flat=True).distinct()
